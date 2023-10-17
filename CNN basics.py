@@ -9,6 +9,7 @@ from torchinfo import summary
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
+#Build a simple conv net:
 class SimpleConvnet(nn.Module):
     def __init__(self):
         super(SimpleConvnet, self).__init__()
@@ -40,6 +41,7 @@ class SimpleConvnet(nn.Module):
 visual_model = SimpleConvnet()
 summary(visual_model, (10, 1, 28, 28))
 
+#Load MINST Dataset from google drive
 # load from torch vision package
 train_dataset = torchvision.datasets.MNIST('./data',
                                            train=True,
@@ -58,6 +60,7 @@ valid_loader = DataLoader(dataset=test_dataset,
                           batch_size=32,
                           shuffle=False)
 
+#Train function
 def train(batch_size, num_epochs, learning_rate, model, train_loader, valid_loader, device):
   # move the model to device
   model = model.to(device)  # move the model to gpu or cpu
@@ -124,7 +127,7 @@ def train(batch_size, num_epochs, learning_rate, model, train_loader, valid_load
 
   return history
 
-
+#Train the model
 model = SimpleConvnet()
 
 history = train(batch_size=32,
@@ -135,6 +138,7 @@ history = train(batch_size=32,
                 valid_loader=valid_loader,
                 device=device)
 
+#Plot
 plt.plot(history['train_acc'], label='Train')
 plt.plot(history['valid_acc'], label='Valid')
 plt.legend()
